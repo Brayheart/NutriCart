@@ -1,22 +1,41 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 
 import Home from "./Components/Home";
 import Recipes from "./Components/Recipes";
 import GroceryList from "./Components/GroceryList";
+import Navbar from "./Components/Navbar";
 
 function App() {
   return (
     <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* Other routes will use the LayoutWithNavbar */}
+        <Route path="*" element={<LayoutWithNavbar />} />
+      </Routes>
+    </Router>
+  );
+}
+
+function LayoutWithNavbar() {
+  let location = useLocation();
+
+  return (
+    <>
+      {location.pathname !== "/" && <Navbar />}
       <div>
-        {/* Navigation links can go here */}
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Define routes that should be wrapped with the Navbar here */}
           <Route path="/recipes" element={<Recipes />} />
-          <Route path="/grocery-list" element={<GroceryList />} />
-          {/* Add additional routes as needed */}
+          {/* ...other routes */}
         </Routes>
       </div>
-    </Router>
+    </>
   );
 }
 
